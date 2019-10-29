@@ -1,0 +1,34 @@
+.container {
+  display : flex;
+  }
+
+.instructions {
+  text-align:center;
+  width:50%;
+  height:670px; 
+}
+
+.instructions h1, .instructions button {
+  margin-right:auto;
+  margin-left:auto;
+
+}
+
+.instructions h1 {
+  font-size: 3em;
+  color:#b7d44f;
+}
+
+.instructions button {
+  font-size: 1.5em;
+  padding: 0.5em;
+  background-color: #b7d44f;
+  color: black;
+  border-radius: 14px;
+}
+
+canvas {
+border:2px solid;
+margin-left:auto;
+margin-right:20px;
+}
