@@ -14,6 +14,9 @@ class Dino {
       this.y= this.ground;
       this.dx=2;
       this.dy=0;
+      this.onGround=true; 
+      this.jumpPower=-3.2;
+      this.jumpKey=false; 
       
     }
     this.rightKeyPressed=false; 
@@ -38,23 +41,26 @@ class Dino {
 
   moveRight(){
     if(this.rightKeyPressed){
-      if((this.x+this.dx)>0) { this.x += this.dx; }
+      if((this.x+this.dx)<W-this.w) { this.x += this.dx; }
     }
     
 
   }
 
-  jump(){
-    if(this.jumpKey){ // utiliser une variable ascending 
-      this.speedY=
-      } else {
-      this.ascend=false;};  
+  // take the jump 
+  update(){
+    if (this.jumpKey && this.onGround) { this.dy = this.jumpPower};
+    this.dy += gravity;
+    this.y += this.dy;
+
+    //test if on ground : 
+    if (this.y >= this.ground) {
+      this.y = this.ground;
+      this.dy = 0;
+      this.onGround = true;
+    } else {
+      this.onGround = false;
     }
-    if(this.jumpKey&&!this.ascend){
-      if(this.y>this.ground){
-        this.y++;
-      } else {this.jumpKey=false;}
-    } 
   }
 
 

@@ -1,7 +1,9 @@
 const ctx=document.getElementById("canvas").getContext('2d');
 const W=ctx.canvas.width; 
 const H=ctx.canvas.height; 
+const gravity = 0.13;  // gravity 
 
+let attacker=new Attacker; 
 let dino= new Dino(); 
 
 // Draws Ground
@@ -30,11 +32,12 @@ function renderTrees(){
 
 
 document.onkeydown = function (e) {
+  console.log('keydown');
   if (!dino) return;
   
   if(e.keyCode===39){ dino.rightKeyPressed=true}; 
   if(e.keyCode===37){ dino.leftKeyPressed=true};
-  if(e.keyCode==32){dino.jumpKey=true; this.ascend=true}
+  if(e.keyCode==32){dino.jumpKey=true;}
 }
 
 document.onkeyup = function (e) {
@@ -42,6 +45,7 @@ document.onkeyup = function (e) {
   
   if(e.keyCode===39){ dino.rightKeyPressed=false}; 
   if(e.keyCode===37){ dino.leftKeyPressed=false};
+  if(e.keyCode==32){dino.jumpKey=false; }
   
 }
 
@@ -49,12 +53,15 @@ document.onkeyup = function (e) {
 let frames = 0;
 const render = () => {
   ctx.clearRect(0,0,W,H); 
-  renderTrees()
-  renderGround()
+  renderTrees();
+  renderGround();
+  dino.update();
   dino.draw();
   dino.moveLeft();
-  dino.moveRight(); 
-  dino.jump();
+  dino.moveRight();
+  attacker.draw();
+  attacker.update();
+
   requestAnimationFrame(render);
 };
 
