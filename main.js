@@ -1,10 +1,15 @@
-const ctx=document.getElementById("canvas").getContext('2d');
+
+const canv=document.getElementById("canvas"); 
+const $score=document.getElementById("score");
+const ctx=canv.getContext('2d');
 const W=ctx.canvas.width; 
 const H=ctx.canvas.height; 
 const gravity = 0.13;  // gravity 
 
-let attacker=new Attacker; 
+let mush=new Mushroom(); 
 let dino= new Dino(); 
+let gameOver= false; 
+let score= 0; 
 
 // Draws Ground
 var ground = new Image();
@@ -30,6 +35,7 @@ function renderTrees(){
   ctx.drawImage(tree,0,0,282,301,100,H-270,200*282/301,200);
 }
 
+// HANDLE INPUT 
 
 document.onkeydown = function (e) {
   console.log('keydown');
@@ -48,24 +54,37 @@ document.onkeyup = function (e) {
   if(e.keyCode==32){dino.jumpKey=false; }
   
 }
-
  
-let frames = 0;
+
+//HANDLE GAME LOOP 
 const render = () => {
+  
   ctx.clearRect(0,0,W,H); 
   renderTrees();
   renderGround();
+  console.log("background drawn")
   dino.update();
   dino.draw();
+  console.log("Dino Drawn")
   dino.moveLeft();
   dino.moveRight();
-  attacker.draw();
-  attacker.update();
-
+  mush.draw();
+  console.log("mush drawn")
+  mush.update();
+  gameOver=mush.collision(dino);
+  $score.innerHTML = "Score " + score;
+  if(!gameOver) { 
   requestAnimationFrame(render);
+  }
 };
 
-render();
+// const button=document.getElementById("start"); 
+// button.onclick=()=> {
+// canv.style.display="block";
+
+// }
+
+render()
 
 //the Game loop 
 // var lastTime;

@@ -1,14 +1,23 @@
-class Attacker {
+class Mushroom {
 
   constructor(){
-    this.radius=15; 
-    this.left=Math.floor(Math.random()*2);  
-    this.left? this.x=0: this.x=W-this.radius/2;   
-    this.y=H-70-this.radius; 
-    this.dx=2; 
-    this.collision=false; 
+
+  const mushImg = document.createElement('img');
     
+  mushImg.onload = () => {
+   
+    this.img = mushImg;
+    this.h=30; 
+    this.w=this.h*mushImg.naturalWidth/mushImg.naturalHeight;
+    this.left=Math.floor(Math.random()*2);  
+    this.left? this.x=0: this.x=W-this.h;   
+    this.y=H-70-this.h; 
+    this.dx=2; 
   }
+
+  mushImg.src = "images/mush.png";
+
+}
 
   update() {
     if(this.left){this.x+=this.dx; 
@@ -18,10 +27,19 @@ class Attacker {
   }
 
   draw() {
-    ctx.beginPath(); 
-    ctx.arc(this.x,this.y,this.radius,0, Math.PI*2); 
-    ctx.closePath();
-    ctx.fill();
+    if (!this.img) return; 
+    ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
+    // ctx.strokeRect(this.x,this.y,this.w,this.h);
+  }
+
+  //test if collision with Dino 
+  collision(dino){
+    if (!this.img||!dino) return false; 
+    if(!((this.y>(dino.y+dino.h))||(!this.left&&((this.x>=dino.x+dino.w-25)||(this.x<=dino.x+25)))||(this.left&&((this.x<=dino.x+25)||(this.x>=dino.x+dino.w-25))))){
+
+      return true;
+    }
   }
 
 }
+

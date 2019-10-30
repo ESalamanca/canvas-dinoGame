@@ -15,7 +15,7 @@ class Dino {
       this.dx=2;
       this.dy=0;
       this.onGround=true; 
-      this.jumpPower=-3.2;
+      this.jumpPower=-4;
       this.jumpKey=false; 
       
     }
@@ -30,6 +30,7 @@ class Dino {
   draw() { 
     if (!this.img) return; // if `this.img` is not loaded yet => don't draw
     ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+    // ctx.strokeRect(this.x,this.y,this.w,this.h)
   }
 
   moveLeft(){
@@ -61,6 +62,7 @@ class Dino {
     } else {
       this.onGround = false;
     }
+    
   }
 
 
