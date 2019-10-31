@@ -5,12 +5,12 @@ class Dino {
     
     dinoImg.onload = () => {
    
-    this.img = dinoImg;
+      this.img = dinoImg;
       const dinoRatio = dinoImg.naturalWidth/dinoImg.naturalHeight;
       this.w=100;
       this.h=this.w/dinoRatio;
       this.x=W/2;
-      this.ground=H-70-this.h; 
+      this.ground=H-50-this.h; 
       this.y= this.ground;
       this.dx=2;
       this.dy=0;

@@ -11,7 +11,7 @@ class Mushroom {
     this.w=this.h*mushImg.naturalWidth/mushImg.naturalHeight;
     this.left=Math.floor(Math.random()*2);  
     this.left? this.x=0: this.x=W-this.h;   
-    this.y=H-70-this.h; 
+    this.y=H-50-this.h; 
     this.dx=2; 
   }
 
@@ -34,7 +34,7 @@ class Mushroom {
 
   //test if collision with Dino 
   collision(dino){
-    if (!this.img||!dino) return false; 
+    if (!this.img||!dino.img) return false; 
     if(!((this.y>(dino.y+dino.h))||(!this.left&&((this.x>=dino.x+dino.w-25)||(this.x<=dino.x+25)))||(this.left&&((this.x<=dino.x+25)||(this.x>=dino.x+dino.w-25))))){
 
       return true;
