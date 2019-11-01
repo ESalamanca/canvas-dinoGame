@@ -2,6 +2,7 @@
 const canv=document.getElementById("canvas"); 
 const $score=document.getElementById("score");
 const $overlay=document.getElementById("game-overlay"); 
+const $h1=document.querySelector("h1");
 const ctx=canv.getContext('2d');
 const W=ctx.canvas.width; 
 const H=ctx.canvas.height; 
@@ -113,17 +114,13 @@ function animLoop(){
   }
 
   if(gameOver){
-    clearInterval(intervalId); 
-    cancelAnimationFrame(raf);
-    $overlay.style.backgroundImage="url('images/dead.png')";
-    $overlay.style.display="block";
-    canv.style.display="none";
+    endGame();
   }
   
 };
 
-let intervalId=setInterval(function(){eggs.push(new Egg())},3000);
-let AttackersId=setInterval(function(){mushs.push(new Mushroom())},4000);
+let intervalId; 
+let attackersId;
 
 function startGame() {
   button.blur()
@@ -134,7 +131,12 @@ function startGame() {
   }
 
   startTime=Date.now(); 
- 
+  intervalId=setInterval(function(){
+    eggs.push(new Egg()); 
+    console.log("Egg created");
+    },3000);
+  
+  attackersId=setInterval(function(){mushs.push(new Mushroom())},4000);
   raf = requestAnimationFrame(animLoop);
 }
 const button=document.getElementById("start"); 
@@ -151,10 +153,24 @@ button.onclick=()=> {
 
 
 function reset() {
+  dino=new Dino();
   gameOver = false;
   mushs=[];
   eggs=[]; 
   score=0; 
+}
+
+function endGame(){
+  clearInterval(intervalId); 
+  clearInterval(attackersId)
+  cancelAnimationFrame(raf);
+  $overlay.style.backgroundImage="url('images/dead.png')";
+  $overlay.style.display="block";
+  $instructions.style.display="block";
+  $h1.innerHTML="Game Over...";
+  button.innerHTML="Start Again";
+  canv.style.display="none";
+
 }
 //the Game loop 
 // 

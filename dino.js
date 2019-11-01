@@ -6,7 +6,7 @@ class Dino {
     dinoImg.onload = () => {
    
       this.img = dinoImg;
-      const dinoRatio = dinoImg.naturalWidth/dinoImg.naturalHeight;
+      const dinoRatio = (dinoImg.naturalWidth/2)/dinoImg.naturalHeight;
       this.w=100;
       this.h=this.w/dinoRatio;
       this.x=W/2;
@@ -14,6 +14,7 @@ class Dino {
       this.y= this.ground;
       this.dx=2;
       this.dy=0;
+      this.sprite=0; 
       this.onGround=true; 
       this.jumpPower=-4;
       this.jumpKey=false; 
@@ -22,14 +23,19 @@ class Dino {
     this.rightKeyPressed=false; 
     this.leftKeyPressed=false; 
   
-    dinoImg.src = "images/dino.png";
+    dinoImg.src = "images/spritesheet.png";
     
 
   }
 
   draw() { 
     if (!this.img) return; // if `this.img` is not loaded yet => don't draw
-    ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+    if(!this.sprite){
+      ctx.drawImage(this.img,0,0,198,211, this.x, this.y, this.w, this.h);
+    } else {
+      ctx.drawImage(this.img,198,0,198,211, this.x, this.y, this.w, this.h);
+    } 
+    
     // ctx.strokeRect(this.x,this.y,this.w,this.h)
   }
 
@@ -42,7 +48,9 @@ class Dino {
 
   moveRight(){
     if(this.rightKeyPressed){
-      if((this.x+this.dx)<W-this.w) { this.x += this.dx; }
+      if((this.x+this.dx)<W-this.w) { 
+        this.x += this.dx;
+        this.sprite=(this.sprite+1)%2 }
     }
     
 
