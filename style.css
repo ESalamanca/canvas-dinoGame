@@ -34,7 +34,7 @@
 
 #game-overlay {
   width:700px; 
-  height:550px;
+  height:450px;
   background-image:url("images/Idle.png");
   background-size : contain; 
   background-position: center;

@@ -1,6 +1,6 @@
 class Mushroom {
 
-  constructor(){
+  constructor(dx){
 
     this.img = preload.getResult("mush");
     this.h=30; 
@@ -8,20 +8,29 @@ class Mushroom {
     this.left=Math.floor(Math.random()*2);  
     this.left? this.x=0: this.x=W-this.h;   
     this.y=H-50-this.h; 
-    this.dx=2; 
+    this.dx=dx;
+    this.dy=0; 
+    this.jumpPower=-2;
+    this.jumpAction=false;
+    this.onGround=true; 
+    this.ground=H-50-this.h;
+    this.isActive=true;    
 
 
 }
 
-  update() {
-    if(this.left){this.x+=this.dx; 
+  update(dt) {
+    if(this.left){this.x+=this.dx*dt; 
     } else {
-      this.x -=this.dx; 
+      this.x -=this.dx*dt; 
     }
+
+    if(this.x>W||this.x<0) { this.isActive=false; }
+    
   }
 
   draw() {
-    if (!this.img) return; 
+    if (!this.img||!this.isActive) return; 
     ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
     // ctx.strokeRect(this.x,this.y,this.w,this.h);
   }
@@ -33,6 +42,26 @@ class Mushroom {
 
       return true;
     }
+  }
+
+  jump(){
+    if (this.jumpAction && this.onGround && this.isActive) { 
+      this.dy = this.jumpPower;
+      this.jumpAction=false; 
+    }
+    
+    this.dy += gravity;
+    this.y += this.dy;
+
+    //test if on ground : 
+    if (this.y >= this.ground) {
+      this.y = this.ground;
+      this.dy = 0;
+      this.onGround = true;
+    } else {
+      this.onGround = false;
+    }
+    
   }
 
 }
