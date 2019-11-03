@@ -2,20 +2,14 @@ class Mushroom {
 
   constructor(){
 
-  const mushImg = document.createElement('img');
-    
-  mushImg.onload = () => {
-   
-    this.img = mushImg;
+    this.img = preload.getResult("mush");
     this.h=30; 
-    this.w=this.h*mushImg.naturalWidth/mushImg.naturalHeight;
+    this.w=this.h*this.img.naturalWidth/this.img.naturalHeight;
     this.left=Math.floor(Math.random()*2);  
     this.left? this.x=0: this.x=W-this.h;   
     this.y=H-50-this.h; 
     this.dx=2; 
-  }
 
-  mushImg.src = "images/mush.png";
 
 }
 

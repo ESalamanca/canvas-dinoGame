@@ -1,29 +1,24 @@
 class Dino {
 
   constructor(){
-    const dinoImg = document.createElement('img');
-    
-    dinoImg.onload = () => {
-   
-      this.img = dinoImg;
-      const dinoRatio = (dinoImg.naturalWidth/2)/dinoImg.naturalHeight;
-      this.w=100;
-      this.h=this.w/dinoRatio;
-      this.x=W/2;
-      this.ground=H-50-this.h; 
-      this.y= this.ground;
-      this.dx=2;
-      this.dy=0;
-      this.sprite=0; 
-      this.onGround=true; 
-      this.jumpPower=-4;
-      this.jumpKey=false; 
-      
-    }
+       
+    this.img = preload.getResult("spritesheet");
+    const dinoRatio = (this.img.naturalWidth/2)/this.img.naturalHeight;
+    this.w=100;
+    this.h=this.w/dinoRatio;
+    this.x=W/2;
+    this.ground=H-50-this.h; 
+    this.y= this.ground;
+    this.dx=2;
+    this.dy=0;
+    this.sprite=0; 
+    this.onGround=true; 
+    this.jumpPower=-4;
+    this.jumpKey=false; 
     this.rightKeyPressed=false; 
     this.leftKeyPressed=false; 
   
-    dinoImg.src = "images/spritesheet.png";
+
     
 
   }

@@ -10,27 +10,10 @@ const gravity = 0.13;  // gravity
 
 let eggs=[]; 
 let mushs=[];
-let dino= new Dino(); 
 let gameOver; 
 let score=0; 
 
-//Draws first image 
 
-
-
-// Draws Ground
-var ground = new Image();
-ground.onload = function() {
-    renderGround();
-};
-ground.src = "images/ground.png";
-
-//Draws Tree 
-var tree=new Image();
-tree.onload=function(){
-  renderTrees(); 
-};
-tree.src="images/tree.png";
 
 function renderGround() {
   for (let i=0; i<7;i++) {
@@ -87,6 +70,7 @@ function animLoop(){
   ctx.clearRect(0,0,W,H); 
 
   var now = Date.now();
+  var dt = (now - lastTime) / 1000.0;
   gameTime=(now-startTime)/1000.0; 
 
   draw(); 
@@ -123,7 +107,7 @@ let intervalId;
 let attackersId;
 
 function startGame() {
-  button.blur()
+  button.blur();
   console.log(raf); 
   console.log('im in startGame loop')
   if (raf) {
@@ -139,7 +123,7 @@ function startGame() {
   attackersId=setInterval(function(){mushs.push(new Mushroom())},4000);
   raf = requestAnimationFrame(animLoop);
 }
-const button=document.getElementById("start"); 
+
 const $instructions=document.querySelector(".instructions");
 
 button.onclick=()=> {
@@ -172,14 +156,3 @@ function endGame(){
   canv.style.display="none";
 
 }
-//the Game loop 
-// 
-// function main() {
-//     var now = Date.now();
-//     var dt = (now - lastTime) / 1000.0;
-
-//     update(dt);
-
-//     lastTime = now;
-//     requestAnimationFrame(main);
-// };

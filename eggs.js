@@ -2,19 +2,11 @@ class Egg {
 
 
   constructor(){
-
-    const eggImg = document.createElement('img');
-      
-    eggImg.onload = () => {
      
-      this.img = eggImg;
-      this.h=30; 
-      this.x=random(0,W-this.h); 
-      this.y=H-50-this.h - random(0,140);  
-
-    }
-  
-    eggImg.src = "images/dinoegg.png";
+    this.img = preload.getResult("dinoegg");
+    this.h=30; 
+    this.x=random(0,W-this.h); 
+    this.y=H-50-this.h - random(0,140);  
   
   }
 
