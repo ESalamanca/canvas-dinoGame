@@ -14,11 +14,16 @@ class Dino {
     this.ground=H-50-this.h; 
     this.y= this.ground;
     this.dx=200; //speed = pixels/seconds 
-    this.dy=0;  
+    this.dy=0;
+
+    //Immunity to mushroom
+    this.shield=false; 
     
+    //Handles the movements and jumps 
     this.onGround=true; 
     this.jumpPower=-4;
     this.jumpKey=false; 
+    this.superJump=false; 
     this.rightKeyPressed=false; 
     this.leftKeyPressed=false; 
 
@@ -75,11 +80,18 @@ class Dino {
   }
 
   // take the jump 
-  update(){
+  update(platform){
+    this.adjustGround(platform); 
+
     if (this.jumpKey && this.onGround) { this.dy = this.jumpPower};
+    if (this.jumpKey && this.onGround && this.superJump){
+      this.dy = this.dy -3; 
+      this.superJump=false;
+    }
     this.dy += gravity;
     this.y += this.dy;
 
+    
     //test if on ground : 
     if (this.y >= this.ground) {
       this.y = this.ground;
@@ -89,6 +101,19 @@ class Dino {
       this.onGround = false;
     }
     
+  }
+
+  adjustGround(platform){
+    if(platform.active){
+      if((platform.x+platform.totalWidth>this.x>platform.x) && (this.y+this.h<platform.y)){
+        console.log('au dessus')
+        this.ground=platform.y-this.h;
+      }
+    } else {
+      this.ground=H-50-this.h; 
+    }
+    
+
   }
 
 

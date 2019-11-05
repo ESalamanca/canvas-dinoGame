@@ -8,12 +8,12 @@ const W=ctx.canvas.width;
 const H=ctx.canvas.height; 
 const gravity = 0.13;  // gravity 
 
-
 let eggs=[]; 
 let mushs=[];
 let mushSpeed=100; 
 let gameOver; 
-let score=0; 
+let score=0;
+var platform; 
 
 
 
@@ -35,17 +35,18 @@ document.onkeydown = function (e) {
   console.log('keydown');
   if (!dino) return;
   
-  if(e.keyCode===39){ dino.rightKeyPressed=true}; 
-  if(e.keyCode===37){ dino.leftKeyPressed=true};
+  if(e.keyCode===39){ dino.rightKeyPressed=true;}
+  if(e.keyCode===37){ dino.leftKeyPressed=true;}
   if(e.keyCode==32){dino.jumpKey=true;}
+  if(e.keyCode==38){dino.superJump=true;}
 }
 
 document.onkeyup = function (e) {
 
   if (!dino) return;
   
-  if(e.keyCode===39){ dino.rightKeyPressed=false}; 
-  if(e.keyCode===37){ dino.leftKeyPressed=false};
+  if(e.keyCode===39){ dino.rightKeyPressed=false;} 
+  if(e.keyCode===37){ dino.leftKeyPressed=false;}
   if(e.keyCode==32){dino.jumpKey=false; }
   
 }
@@ -53,6 +54,7 @@ document.onkeyup = function (e) {
 function draw() {
   renderTrees();
   renderGround();
+  platform.draw(); 
   dino.draw();
   mushs.forEach(function(el){el.draw()});
   eggs.forEach(function(el){el.draw()}); 
@@ -76,7 +78,7 @@ function animLoop(){
   gameTime=(now-startTime)/1000.0; 
 
    
-  dino.update();
+  dino.update(platform);
   dino.moveLeft(dt);
   dino.moveRight(dt);
   draw();
@@ -90,10 +92,25 @@ function animLoop(){
   
   eggs.slice().forEach(function(egg,i){
     if(egg.eatenByDino(dino)){
-      score ++;
+      switch(egg.eggType){
+        case "normal":
+          score ++;
+          break; 
+
+        case "silver":
+          score += 2;
+          dino.shield=true; 
+          break; 
+        
+        case "gold" :
+          score +=5; 
+          break; 
+      }
+      
       eggs.splice(i,1);
     }
   });
+
 
   $score.innerHTML = "Score " + score;
   lastTime = Date.now();
@@ -102,7 +119,9 @@ function animLoop(){
   if(score>5){mushSpeed=150;}
   if (score>10){ 
     let activeMushs=mushs.filter(el=>el.isActive); 
-    activeMushs[Math.floor(Math.random()*activeMushs.length)].jumpAction=true; 
+    if(activeMushs){
+      activeMushs[Math.floor(Math.random()*activeMushs.length)].jumpAction=true;
+    } 
   }
 
   if(!gameOver) { 
@@ -120,18 +139,16 @@ let attackersId;
 
 function startGame() {
   button.blur();
-  console.log(raf); 
-  console.log('im in startGame loop')
+  
   if (raf) {
     cancelAnimationFrame(raf);
   }
   lastTime = Date.now();
   startTime=Date.now(); 
   intervalId=setInterval(function(){
-    eggs.push(new Egg()); 
-    console.log("Egg created");
+    eggs.push(new Egg("normal")); 
     },3000);
-  
+  platform=new Platform(400,330,2, "silver",1);
   attackersId=setInterval(function(){mushs.push(new Mushroom(mushSpeed))},4000);
   raf = requestAnimationFrame(animLoop);
 }

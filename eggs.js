@@ -1,12 +1,28 @@
 class Egg {
 
 
-  constructor(){
+  constructor(eggType){
      
-    this.img = preload.getResult("dinoegg");
     this.h=30; 
     this.x=random(0,W-this.h); 
-    this.y=H-50-this.h - random(0,140);  
+    this.y=H-50-this.h - random(0,140); 
+    this.eggType=eggType;
+    
+    switch(this.eggType){
+      case "normal": 
+        this.img=preload.getResult("dinoegg");
+        break; 
+      
+      case "silver": 
+        this.img=preload.getResult("dinoeggSilver");
+        break; 
+      
+      case "gold":
+        this.img=preload.getResult("dinoeggGold");
+        break; 
+
+    }
+
   
   }
 
