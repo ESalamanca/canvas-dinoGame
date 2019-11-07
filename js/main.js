@@ -15,7 +15,7 @@ let mushSpeed=100;
 let gameOver; 
 let score=0;
 var platforms=[]; 
-var superJumpActivated=false; 
+var superJumpActivated=true; 
 
 
 
@@ -40,7 +40,7 @@ document.onkeydown = function (e) {
   if(e.keyCode===39){ dino.rightKeyPressed=true;}
   if(e.keyCode===37){ dino.leftKeyPressed=true;}
   if(e.keyCode==32){dino.jumpKey=true;}
-  if(e.keyCode==38){dino.superJump=true;}
+  if(e.keyCode==38 && superJumpActivated){dino.superJump=true;}
 }
 
 document.onkeyup = function (e) {
@@ -134,9 +134,9 @@ function animLoop(){
   
   //UPDATE DIFFICULTY 
   if(score>5){
-    mushSpeed=150;
-    
+    mushSpeed=150;    
   }
+
   if (score>10){ 
     let activeMushs=mushs.filter(el=>el.isActive); 
     if(activeMushs){
