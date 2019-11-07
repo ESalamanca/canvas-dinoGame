@@ -106,8 +106,7 @@ class Dino {
 
   adjustGround(platform){
     if(platform.active){
-      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<platform.y)){
-        
+      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
         this.ground=platform.y-this.h;
       } else if ((this.x+this.w/2<platform.x)||(this.x+this.w/2>platform.x + platform.totalWidth)) {
         

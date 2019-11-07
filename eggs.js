@@ -34,7 +34,7 @@ class Egg {
   
   eatenByDino(dino){
     if (!this.img||!dino.img) return false; 
-    if((this.y>=dino.y)&&(this.y<=dino.y+dino.h)&&(this.x>=dino.x)&&(this.x<=dino.x+dino.w-25)){
+    if((this.y+this.h/2>=dino.y)&&(this.y<=dino.y+dino.h)&&(this.x>=dino.x)&&(this.x<=dino.x+dino.w-25)){
       console.log("egg eaten");
       return true;
     }

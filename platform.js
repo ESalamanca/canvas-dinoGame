@@ -17,9 +17,13 @@ class Platform {
 
   draw(){
     if(this.active){
+      
       ctx.drawImage(platformL,this.x,this.y,50,this.h);
-      for (let i=0; i<this.width; i++){
+     
+      if(this.width!=0){
+        for (let i=0; i<this.width; i++){
         ctx.drawImage(platformC,this.x+(i+1)*50,this.y,50,this.h);
+        }
       }
       ctx.drawImage(platformR,this.x+(this.width+1)*50,this.y,50,this.h); 
     }

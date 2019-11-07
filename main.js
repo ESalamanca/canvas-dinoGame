@@ -14,7 +14,7 @@ let mushs=[];
 let mushSpeed=100; 
 let gameOver; 
 let score=0;
-var platforms; 
+var platforms=[]; 
 
 
 
@@ -55,7 +55,7 @@ document.onkeyup = function (e) {
 function draw() {
   renderTrees();
   renderGround();
-  platform.draw(); 
+  platforms.forEach(el=>el.draw()); 
   dino.draw();
   if(dino.shield){
     ctx.drawImage(dinoShield,0,0,50,50);
@@ -90,7 +90,7 @@ function animLoop(){
     mushs.push(new Mushroom(mushSpeed)); 
   }
   
-  dino.adjustGround(platform);
+  platforms.forEach(platform=>dino.adjustGround(platform));
   dino.update();
   dino.moveLeft(dt);
   dino.moveRight(dt);
@@ -166,7 +166,8 @@ function startGame() {
     },3000);
 
     
-  platform=new Platform(400,330,2, "silver",1);
+  // platforms.push(new Platform(400,330,2, "silver",1));
+  platforms.push(new Platform(30,325,0, "gold",1));
   // attackersId=setInterval(function(){mushs.push(new Mushroom(mushSpeed))},4000);
   raf = requestAnimationFrame(animLoop);
 }
