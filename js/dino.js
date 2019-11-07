@@ -91,7 +91,10 @@ class Dino {
     this.dy += gravity;
     this.y += this.dy;
 
-    
+    if(this.y<0){
+      this.dy=0;
+      this.y=0; 
+    }
     //test if on ground : 
     if (this.y >= this.ground) {
       this.y = this.ground;

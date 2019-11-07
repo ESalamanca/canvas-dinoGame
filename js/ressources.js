@@ -13,6 +13,7 @@ var dinoShield;
 
 function loadImages() {
     preload.loadFile({id:"dino", src:"./images/dino.png", type:createjs.Types.IMAGE});
+    preload.loadFile({id:"background", src:"./images/background.png", type:createjs.Types.IMAGE});
     preload.loadFile({id:"dinoShield", src:"./images/dinoShield.png", type:createjs.Types.IMAGE});
     preload.loadFile({id:"spritesheet", src:"./images/spritesheet.png", type:createjs.Types.IMAGE});
     preload.loadFile({id:"dinoLeft", src:"./images/dinoLeft.png", type:createjs.Types.IMAGE});

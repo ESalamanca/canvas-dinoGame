@@ -54,7 +54,7 @@ document.onkeyup = function (e) {
 }
 
 function draw() {
-  renderTrees();
+  ctx.drawImage(preload.getResult("background"),0,0,700,550)
   renderGround();
   platforms.forEach(el=>el.draw()); 
   dino.draw();
