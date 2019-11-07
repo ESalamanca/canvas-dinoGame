@@ -7,13 +7,14 @@ const ctx=canv.getContext('2d');
 const W=ctx.canvas.width; 
 const H=ctx.canvas.height; 
 const gravity = 0.13;  // gravity 
+const eggTypes=["normal", "silver","gold"]
 
 let eggs=[]; 
 let mushs=[];
 let mushSpeed=100; 
 let gameOver; 
 let score=0;
-var platform; 
+var platforms; 
 
 
 
@@ -56,6 +57,12 @@ function draw() {
   renderGround();
   platform.draw(); 
   dino.draw();
+  if(dino.shield){
+    ctx.drawImage(dinoShield,0,0,50,50);
+    ctx.font = '20px times';
+    ctx.color="rgb(183, 212, 79)";
+    ctx.fillText('Shield Activated', 55,30);
+  }
   mushs.forEach(function(el){el.draw()});
   eggs.forEach(function(el){el.draw()}); 
 }
@@ -67,18 +74,24 @@ let raf;
 let lastTime;
 let startTime; 
 let gameTime; 
+let frames=0; 
+
 // let deltaAttack= [5,4,3,2,1]; 
 
 function animLoop(){
   
   ctx.clearRect(0,0,W,H); 
-
+  frames++; 
   var now = Date.now();
   var dt = (now - lastTime) / 1000.0;
   gameTime=(now-startTime)/1000.0; 
 
-   
-  dino.update(platform);
+  if(frames%200===0) {
+    mushs.push(new Mushroom(mushSpeed)); 
+  }
+  
+  dino.adjustGround(platform);
+  dino.update();
   dino.moveLeft(dt);
   dino.moveRight(dt);
   draw();
@@ -135,7 +148,7 @@ function animLoop(){
 };
 
 let intervalId; 
-let attackersId;
+// let attackersId;
 
 function startGame() {
   button.blur();
@@ -145,11 +158,16 @@ function startGame() {
   }
   lastTime = Date.now();
   startTime=Date.now(); 
-  intervalId=setInterval(function(){
+
+
+  
+   intervalId=setInterval(function(){
     eggs.push(new Egg("normal")); 
     },3000);
+
+    
   platform=new Platform(400,330,2, "silver",1);
-  attackersId=setInterval(function(){mushs.push(new Mushroom(mushSpeed))},4000);
+  // attackersId=setInterval(function(){mushs.push(new Mushroom(mushSpeed))},4000);
   raf = requestAnimationFrame(animLoop);
 }
 
@@ -175,7 +193,7 @@ function reset() {
 
 function endGame(){
   clearInterval(intervalId); 
-  clearInterval(attackersId)
+  // clearInterval(attackersId)
   cancelAnimationFrame(raf);
   $overlay.style.backgroundImage="url('images/dead.png')";
   $overlay.style.display="block";

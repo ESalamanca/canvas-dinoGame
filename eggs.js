@@ -5,7 +5,7 @@ class Egg {
      
     this.h=30; 
     this.x=random(0,W-this.h); 
-    this.y=H-50-this.h - random(0,140); 
+    this.y=H-50-this.h - random(0,400); 
     this.eggType=eggType;
     
     switch(this.eggType){

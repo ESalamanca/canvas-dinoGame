@@ -40,7 +40,7 @@ class Mushroom {
     if (!this.img||!dino.img) return false; 
     if(!((this.y>(dino.y+dino.h))||(!this.left&&((this.x>=dino.x+dino.w-25)||(this.x<=dino.x+25)))||(this.left&&((this.x<=dino.x+25)||(this.x>=dino.x+dino.w-25))))){
       if(dino.shield) {
-        setTimeout(()=>{dino.shield=false},1000); 
+        setTimeout(()=>{dino.shield=false},500); 
         return false; 
       }
       return true;

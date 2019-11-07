@@ -80,12 +80,11 @@ class Dino {
   }
 
   // take the jump 
-  update(platform){
-    this.adjustGround(platform); 
+  update(){ 
 
     if (this.jumpKey && this.onGround) { this.dy = this.jumpPower};
     if (this.jumpKey && this.onGround && this.superJump){
-      this.dy = this.dy -3; 
+      this.dy = this.dy -2.8; 
       this.superJump=false;
     }
     this.dy += gravity;
@@ -100,18 +99,24 @@ class Dino {
     } else {
       this.onGround = false;
     }
+
+
     
   }
 
   adjustGround(platform){
     if(platform.active){
-      if((platform.x+platform.totalWidth>this.x>platform.x) && (this.y+this.h<platform.y)){
-        console.log('au dessus')
+      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<platform.y)){
+        
         this.ground=platform.y-this.h;
+      } else if ((this.x+this.w/2<platform.x)||(this.x+this.w/2>platform.x + platform.totalWidth)) {
+        
+        this.ground= H-50-this.h;
+  
       }
     } else {
-      this.ground=H-50-this.h; 
-    }
+      this.ground= H-50-this.h;
+    }  
     
 
   }

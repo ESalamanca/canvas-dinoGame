@@ -8,10 +8,12 @@ var tree;
 var platformC;
 var platformL;
 var platformR;
+var dinoShield; 
 
 
 function loadImages() {
     preload.loadFile({id:"dino", src:"images/dino.png", type:createjs.Types.IMAGE});
+    preload.loadFile({id:"dinoShield", src:"images/dinoShield.png", type:createjs.Types.IMAGE});
     preload.loadFile({id:"spritesheet", src:"images/spritesheet.png", type:createjs.Types.IMAGE});
     preload.loadFile({id:"dinoLeft", src:"images/dinoLeft.png", type:createjs.Types.IMAGE});
     preload.loadFile({id:"spritesheetL", src:"images/spritesheetL.png", type:createjs.Types.IMAGE});
@@ -51,7 +53,8 @@ function loadImages() {
     tree= preload.getResult("tree");
     platformC=preload.getResult("platformC");
     platformL=preload.getResult("platformL");
-    platformR=preload.getResult("platformR"); 
+    platformR=preload.getResult("platformR");
+    dinoShield= preload.getResult("dinoShield");
      
   
 
