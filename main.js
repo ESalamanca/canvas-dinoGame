@@ -15,6 +15,7 @@ let mushSpeed=100;
 let gameOver; 
 let score=0;
 var platforms=[]; 
+var superJumpActivated=false; 
 
 
 
@@ -89,8 +90,11 @@ function animLoop(){
   if(frames%200===0) {
     mushs.push(new Mushroom(mushSpeed)); 
   }
-  
-  platforms.forEach(platform=>dino.adjustGround(platform));
+  dino.checkOverPlatform(platforms);
+  if(dino.overPlatform) {
+    dino.adjustGround(dino.overPlatform);
+  }
+  // platforms.forEach(platform=>dino.adjustGround(platform));
   dino.update();
   dino.moveLeft(dt);
   dino.moveRight(dt);
@@ -129,7 +133,10 @@ function animLoop(){
   lastTime = Date.now();
   
   //UPDATE DIFFICULTY 
-  if(score>5){mushSpeed=150;}
+  if(score>5){
+    mushSpeed=150;
+    
+  }
   if (score>10){ 
     let activeMushs=mushs.filter(el=>el.isActive); 
     if(activeMushs){
@@ -163,11 +170,12 @@ function startGame() {
   
    intervalId=setInterval(function(){
     eggs.push(new Egg("normal")); 
-    },3000);
+    },4000);
 
-    
-  // platforms.push(new Platform(400,330,2, "silver",1));
-  platforms.push(new Platform(30,325,0, "gold",1));
+  platforms.push(new Platform(10,330,0, "normal",1));
+  platforms.push(new Platform(200,250,0, "normal",1));
+  platforms.push(new Platform(380,300,1, "silver",1));
+  platforms.push(new Platform(500,140,0, "gold",1));
   // attackersId=setInterval(function(){mushs.push(new Mushroom(mushSpeed))},4000);
   raf = requestAnimationFrame(animLoop);
 }

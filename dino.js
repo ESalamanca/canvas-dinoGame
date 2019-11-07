@@ -20,6 +20,7 @@ class Dino {
     this.shield=false; 
     
     //Handles the movements and jumps 
+    this.overPlatform; 
     this.onGround=true; 
     this.jumpPower=-4;
     this.jumpKey=false; 
@@ -120,5 +121,14 @@ class Dino {
 
   }
 
+  checkOverPlatform(platforms){
+    platforms.forEach(platform=>{
+      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
+        this.overPlatform=platform; 
+      }
+
+  });
+
+}
 
 }
