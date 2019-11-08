@@ -22,9 +22,8 @@ class Dino {
     //Handles the movements and jumps 
     this.overPlatform; 
     this.onGround=true; 
-    this.jumpPower=-4;
+    this.jumpPower=-6.5;
     this.jumpKey=false; 
-    this.superJump=false; 
     this.rightKeyPressed=false; 
     this.leftKeyPressed=false; 
 
@@ -84,10 +83,6 @@ class Dino {
   update(){ 
 
     if (this.jumpKey && this.onGround) { this.dy = this.jumpPower};
-    if (this.jumpKey && this.onGround && this.superJump){
-      this.dy = this.dy -2.8; 
-      this.superJump=false;
-    }
     this.dy += gravity;
     this.y += this.dy;
 
@@ -110,7 +105,7 @@ class Dino {
 
   adjustGround(platform){
     if(platform.active){
-      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
+      if(((this.x+this.w/2+5)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
         this.ground=platform.y-this.h;
       } else if ((this.x+this.w/2<platform.x)||(this.x+this.w/2>platform.x + platform.totalWidth)) {
         
@@ -126,7 +121,7 @@ class Dino {
 
   checkOverPlatform(platforms){
     platforms.forEach(platform=>{
-      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
+      if(((this.x+this.w/2+5)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
         this.overPlatform=platform; 
       }
 

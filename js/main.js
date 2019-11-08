@@ -6,7 +6,7 @@ const $h1=document.querySelector("h1");
 const ctx=canv.getContext('2d');
 const W=ctx.canvas.width; 
 const H=ctx.canvas.height; 
-const gravity = 0.13;  // gravity 
+const gravity = 0.2;  // gravity 
 const eggTypes=["normal", "silver","gold"]
 
 let eggs=[]; 
@@ -15,7 +15,6 @@ let mushSpeed=100;
 let gameOver; 
 let score=0;
 var platforms=[]; 
-var superJumpActivated=true; 
 
 
 
@@ -40,7 +39,6 @@ document.onkeydown = function (e) {
   if(e.keyCode===39){ dino.rightKeyPressed=true;}
   if(e.keyCode===37){ dino.leftKeyPressed=true;}
   if(e.keyCode==32){dino.jumpKey=true;}
-  if(e.keyCode==38 && superJumpActivated){dino.superJump=true;}
 }
 
 document.onkeyup = function (e) {
@@ -90,6 +88,19 @@ function animLoop(){
   if(frames%200===0) {
     mushs.push(new Mushroom(mushSpeed)); 
   }
+
+  if(frames%400===0){
+    let eggT="normal";
+  
+      if (score%5===0) {
+        eggT="silver"; 
+      }
+      if (score%6===0 && Math.floor(Math.random()*4)===3){
+        eggT="gold"; 
+      }
+      eggs.push(new Egg(eggT));
+  }
+
   dino.checkOverPlatform(platforms);
   if(dino.overPlatform) {
     dino.adjustGround(dino.overPlatform);
@@ -134,7 +145,8 @@ function animLoop(){
   
   //UPDATE DIFFICULTY 
   if(score>5){
-    mushSpeed=150;    
+    mushSpeed=150;
+
   }
 
   if (score>10){ 
@@ -154,7 +166,6 @@ function animLoop(){
   
 };
 
-let intervalId; 
 // let attackersId;
 
 function startGame() {
@@ -167,15 +178,10 @@ function startGame() {
   startTime=Date.now(); 
 
 
-  
-   intervalId=setInterval(function(){
-    eggs.push(new Egg("normal")); 
-    },4000);
-
-  platforms.push(new Platform(10,330,0, "normal",1));
-  platforms.push(new Platform(200,250,0, "normal",1));
+  platforms.push(new Platform(10,395,0, "normal",1));
+  platforms.push(new Platform(190,298,0, "normal",1));
   platforms.push(new Platform(380,300,1, "silver",1));
-  platforms.push(new Platform(500,140,0, "gold",1));
+  platforms.push(new Platform(500,193,0, "gold",1));
   // attackersId=setInterval(function(){mushs.push(new Mushroom(mushSpeed))},4000);
   raf = requestAnimationFrame(animLoop);
 }
@@ -201,7 +207,7 @@ function reset() {
 }
 
 function endGame(){
-  clearInterval(intervalId); 
+  //clearInterval(intervalId); 
   // clearInterval(attackersId)
   cancelAnimationFrame(raf);
   $overlay.style.backgroundImage="url('images/dead.png')";
