@@ -56,7 +56,7 @@ class Bird {
 
   collision(dino){
     if (!this.img||!dino.img) return false; 
-    if((this.y+this.h/2>=dino.y)&&(this.y<=dino.y+dino.h)&&(this.x>=dino.x)&&(this.x<=dino.x+dino.w-25)){
+    if((this.y+this.h/2>=dino.y)&&(this.y<=dino.y+dino.h)&&(this.x>=dino.x)&&(this.x<=dino.x+dino.w/2)){
       console.log("collision bird")
       if(dino.shield) {
         setTimeout(()=>{dino.shield=false},500); 

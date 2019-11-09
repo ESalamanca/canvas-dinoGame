@@ -32,6 +32,19 @@
   display:none; 
 }
 
+.controls {
+ display: flex;
+ justify-content: space-around;
+ align-items: center;
+}
+
+#mute {
+  display:none;
+  margin-left:5em;
+  padding:1em 1em; 
+  border-radius:2em;
+}
+
 #game-overlay {
   width:700px; 
   height:450px;
@@ -41,7 +54,7 @@
   background-repeat: no-repeat;
 }
 
-#eggSound {
+audio {
   display:none; 
 }
 

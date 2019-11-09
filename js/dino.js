@@ -1,7 +1,8 @@
 class Dino {
 
   constructor(){
-       
+      
+    this.dead=preload.getResult("dead");
     this.imgR = preload.getResult("dino");
     this.spriteRight=preload.getResult("spritesheet");
     this.spriteLeft=preload.getResult("spritesheetL");
@@ -15,6 +16,7 @@ class Dino {
     this.y= this.ground;
     this.dx=200; //speed = pixels/seconds 
     this.dy=0;
+    this.alive=true;
 
     //Immunity to mushroom
     this.shield=false; 
@@ -43,9 +45,17 @@ class Dino {
   draw() { 
     if (!this.img) return; // if `this.img` is not loaded yet => don't draw
       //ctx.drawImage(this.img,0,0,198,211, this.x, this.y, this.w, this.h);
-      ctx.drawImage(this.sprite,this.frame*193,0,193,207,this.x,this.y,this.w,this.h);
+    if(this.alive){ctx.drawImage(this.sprite,this.frame*193,0,193,207,this.x,this.y,this.w,this.h);}
+    
+    if(!this.alive) {
+      this.h=80; 
+      this.w=this.h*this.dead.naturalWidth/this.dead.naturalHeight;
+      this.ground=H-50-this.h+5;
+      ctx.drawImage(this.dead,this.x,this.ground,this.w,this.h);
+    }
     
   }
+
 
   moveLeft(dt){
     if(this.leftKeyPressed){
@@ -84,6 +94,10 @@ class Dino {
 
     if (this.jumpKey && this.onGround) { this.dy = this.jumpPower};
     this.dy += gravity;
+    if(this.dy>7) {
+      this.dy=7;
+    }
+
     this.y += this.dy;
 
     if(this.y<-10){
@@ -103,31 +117,20 @@ class Dino {
     
   }
 
-  adjustGround(platform){
-    if(platform.active){
-      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
-        this.ground=platform.y-this.h;
-      } else if ((this.x+this.w/2<platform.x)||(this.x+this.w/2>platform.x + platform.totalWidth)) {
-        
-        this.ground= H-50-this.h;
-  
-      }
-    } else {
-      this.ground= H-50-this.h;
-    }  
-    
 
+  adjustGround(platforms){
+    let closestPlatforms=platforms; 
+    closestPlatforms = closestPlatforms.filter(platform => this.x + this.w/2 > platform.x && this.x+this.w/2 < platform.x + platform.totalWidth); // dino chevauche la plate-forme en horizontal
+      // On ne garde que les plateformes au dessous (ie: tant que pas entierement traversé)
+    closestPlatforms = closestPlatforms.filter(platform => this.y+this.h <= platform.y + 5);
+      // On trie par de la plateforme la plus proche a la plus éloignée (de mario)
+    closestPlatforms.sort((a, b) => Math.abs(this.y+this.h - a.y) - Math.abs(this.y+this.h - b.y));
+
+    if (closestPlatforms[0] && this.dy > 0 && this.y+this.dy+this.h >= closestPlatforms[0].y) {
+        this.ground = closestPlatforms[0].y - this.h;
+      } else {
+        this.ground=this.ground= H-50-this.h;
+      }
   }
-
-  checkOverPlatform(platforms){
-    platforms.forEach(platform=>{
-      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
-        this.overPlatform=platform; 
-        console.log("overPlatform"); 
-      }
-
-  });
-
-}
 
 }

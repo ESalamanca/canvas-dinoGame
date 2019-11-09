@@ -3,6 +3,13 @@ const canv=document.getElementById("canvas");
 const $score=document.getElementById("score");
 const $overlay=document.getElementById("game-overlay"); 
 const $eggSound=document.getElementById("eggSound");
+$eggSound.volume=0.4; 
+
+const $gameSound=document.getElementById("gameSound");
+$gameSound.loop=true;
+
+const $gameOverSound=document.getElementById("gameOverSound");
+const $mute=document.getElementById("mute");
 const $h1=document.querySelector("h1");
 const ctx=canv.getContext('2d');
 const W=ctx.canvas.width; 
@@ -11,7 +18,6 @@ const gravity = 0.2;  // gravity
 const eggTypes=["normal", "silver","gold"];
 let startPlatforms;
 
-let translate=1; 
 let eggs=[]; 
 let mushs=[];
 let mushSpeed=100; 
@@ -19,6 +25,7 @@ let gameOver;
 let score=0;
 var platforms=[]; 
 var birds=[];
+var sound=true; 
 
 
 
@@ -38,7 +45,6 @@ function renderTrees(){
 
 document.onkeydown = function (e) {
 
-  console.log('keydown');
   if (!dino) return;
   
   if(e.keyCode===39){ dino.rightKeyPressed=true;}
@@ -78,7 +84,9 @@ function draw() {
 let raf;
 let lastTime;
 let startTime; 
-let gameTime; 
+let gameTime;
+let platformTimer;  
+let platformTime; 
 let frames=0; 
 
 // let deltaAttack= [5,4,3,2,1]; 
@@ -89,9 +97,8 @@ function animLoop(){
   frames++; 
   var now = Date.now();
   var dt = (now - lastTime) / 1000.0;
-  gameTime=(now-startTime)/1000.0; 
-
-
+  gameTime=(now-startTime)/1000.0;
+  platformTime= (now-platformTimer)/1000.0; 
 
   if(frames%200===0) {
     mushs.push(new Mushroom(mushSpeed)); 
@@ -116,12 +123,13 @@ function animLoop(){
     randomSide? birds.push(new Bird(random(W/2, W),0,random(60,90),0.15,randomSide)):birds.push(new Bird(random(0, W/2),0,random(60,90),0.15,randomSide)); 
     
   }
-
-  dino.checkOverPlatform(platforms);
-  if(dino.overPlatform) {
-    dino.adjustGround(dino.overPlatform);
+  if (platformTime>30){
+    console.log("time's up")
+    platformTimer=Date.now();
+    platforms=generatePlatforms();
   }
-  // platforms.forEach(platform=>dino.adjustGround(platform));
+
+  dino.adjustGround(platforms); 
   dino.update();
   dino.moveLeft(dt);
   dino.moveRight(dt);
@@ -131,6 +139,7 @@ function animLoop(){
     el.update(dt);
     if(el.collision(dino)){
       gameOver=true;
+      dino.alive=false; 
       };
   });
 
@@ -140,13 +149,14 @@ function animLoop(){
     el.jump(); 
     if(el.collision(dino)){
       gameOver=true;
+      dino.alive=false; 
     }
   })
 
 //Delete eggs that are eaten or that are present for more than 10s 
   eggs.slice().forEach(function(egg,i){
     if(egg.eatenByDino(dino)){
-      $eggSound.play();
+      if(sound){$eggSound.play()};
       switch(egg.eggType){
         case "normal":
           score ++;
@@ -177,7 +187,6 @@ function animLoop(){
   //UPDATE DIFFICULTY 
   if(score>5){
     mushSpeed=150;
-
   }
 
   if (score>10){ 
@@ -191,10 +200,12 @@ function animLoop(){
     raf= requestAnimationFrame(animLoop);
   }
 
-  if(gameOver){
-    setTimeout(endGame,500);
-    //to delete for game over 
-    //raf= requestAnimationFrame(animLoop)
+  if(gameOver){ 
+    $gameSound.pause();
+    if(sound){$gameOverSound.play()};
+    raf=requestAnimationFrame(function(){draw()});
+    setTimeout(endGame,1000);
+
   }
   
 };
@@ -203,16 +214,17 @@ function animLoop(){
 
 function startGame() {
   button.blur();
-  startPlatforms=[new Platform(530,160,0, "gold",1),new Platform(350,260,1, "silver",1),new Platform(200,300,0, "normal",1),new Platform(30,400,0, "normal",1)];
+  startPlatforms=[new Platform(530,160,0, "gold",1),new Platform(330,260,1, "silver",1),new Platform(200,300,0, "normal",1),new Platform(30,400,0, "normal",1)];
   
   if (raf) {
     cancelAnimationFrame(raf);
   }
   lastTime = Date.now();
   startTime=Date.now(); 
+  platformTimer=Date.now(); 
   platforms=startPlatforms; 
   birds.push(new Bird(W,0,70,0.15,1));
-
+  if(sound) {$gameSound.play();}
  
   // attackersId=setInterval(function(){mushs.push(new Mushroom(mushSpeed))},4000);
   raf = requestAnimationFrame(animLoop);
@@ -224,9 +236,25 @@ button.onclick=()=> {
   console.log('action declared')
   $overlay.style.display="none";
   $instructions.style.display="none"; 
+  $mute.style.display="block";
   canv.style.display="block";
   reset();
   startGame();
+}
+
+$mute.onclick=()=>{
+  if(sound){
+    document.getElementById("mute-image").src="images/volumeOff.png";
+    $gameSound.pause(); 
+    sound=false;
+  }else { 
+    sound=true;
+    $gameSound.play (); 
+    document.getElementById("mute-image").src="images/volumeOn.png";
+  }
+;
+  $mute.blur();
+
 }
 
 
@@ -249,6 +277,7 @@ function endGame(){
   $overlay.style.backgroundImage="url('images/dead.png')";
   $overlay.style.display="block";
   $instructions.style.display="block";
+  $mute.style.display="none";
   $h1.innerHTML="Game Over...";
   button.innerHTML="Start Again";
   canv.style.display="none";
@@ -256,36 +285,32 @@ function endGame(){
 }
 
 
-
-
-
-function updatePlatform(){
-
-  eggs.forEach(egg=>{
-    egg.x -=200; 
-  }); 
-
-  platforms.forEach(platform=>{
-    platform.x -=200; 
-  })
-
-  addPlatform(platforms);
-
-}
-
-function addPlatform(platforms){
+function generatePlatforms(){
   let tab= [1,-1];
-  let length=platforms.length; 
-  let lastPlatform=platforms[length-1]; 
-  let randomHeight; 
+  let newPlatformSet=[]; 
+  let numberPlatforms=2+ Math.floor(Math.random()*4); // between 2 and 5 platforms; 
+ 
+  let firstX=random(150,300); 
+  let firstY=random(380,420);
+  newPlatformSet.push(new Platform(firstX,firstY,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
 
-  if (150<lastPlatform.y<400) {
-    randomHeight= lastPlatform.y + tab[Math.floor(Math.random()*2)]*random(80,110); 
-  } else if (lastPlatform.y <150) {
-    randomHeight= lastPlatform.y + random(80,110);
-  } else if (lastPlatform.y>400) {
-    randomHeight= lastPlatform.y - random(80,110);
+  let secondX=random(300,500);
+  let secondY=random(360,400); 
+  newPlatformSet.push(new Platform(secondX,secondY,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
+
+  let lastX=firstX; 
+  let lastY=firstY; 
+  if (numberPlatforms>2){
+    for(let i=2; i<numberPlatforms; i++ ){
+      let x= lastX + tab[Math.floor(Math.random()*2)]*random(0,150); 
+      let y= lastY - random(100,130); 
+      lastX=x; 
+      lastY=y; 
+      newPlatformSet.push(new Platform(x,y,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
+    }
+
   }
 
-  platforms.push(new Platform(lastPlatform.x + random(0,150),randomHeight,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
+  return newPlatformSet; 
 }
+

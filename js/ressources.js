@@ -1,5 +1,5 @@
 const preload=new createjs.LoadQueue(false);
-const sounds=new createjs.LoadQueue(false)
+const sounds=new createjs.LoadQueue(false);
 const $load=document.getElementById("loading"); 
 const button=document.getElementById("start"); 
 var trexSound;  
@@ -32,11 +32,15 @@ function loadImages() {
     preload.loadFile({id:"platformC", src:"./images/platformC.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"platformR", src:"./images/platformR.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"platformL", src:"./images/platformL.png",type:createjs.Types.IMAGE});
+    preload.loadFile({id:"volumeOn", src:"./images/volumeOn.png",type:createjs.Types.IMAGE});
+    preload.loadFile({id:"volumeOn", src:"./images/volumeOff.png",type:createjs.Types.IMAGE});
   }
 
-  function loadSounds(){
-    sounds.loadFile({id:"egg", src:"./images/dead.png",type:createjs.Types.SOUNDS});
-  }
+  // function loadSounds(){
+  //   sounds.loadFile({id:"egg", src:"./images/dead.wav",type:createjs.Types.SOUNDS});
+  //   sounds.loadFile({id:"died", src:"./images/dies.wav",type:createjs.Types.SOUNDS});
+  //   sounds.loadFile({id:"gamePlay", src:"./images/gamePlay.wav",type:createjs.Types.SOUNDS});
+  // }
 
 
 
@@ -48,7 +52,6 @@ function loadImages() {
   
   window.onload= () =>{
     loadImages();
-    loadSounds();
   } 
 
   preload.on("complete", handleComplete, this);
