@@ -130,8 +130,7 @@ function animLoop(){
     randomSide? birds.push(new Bird(random(W/2, W),0,random(60,90),0.15,randomSide)):birds.push(new Bird(random(0, W/2),0,random(60,90),0.15,randomSide)); 
     
   }
-  if (platformTime>30){
-    console.log("time's up")
+  if (platformTime>30 && score>20){
     platformTimer=Date.now();
     platforms=generatePlatforms();
   }
@@ -298,7 +297,7 @@ function generatePlatforms(){
   let numberPlatforms=2+ Math.floor(Math.random()*4); // between 2 and 5 platforms; 
  
   let firstX=random(150,300); 
-  let firstY=random(380,420);
+  let firstY=random(390,420);
   newPlatformSet.push(new Platform(firstX,firstY,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
 
   let secondX=random(300,500);
