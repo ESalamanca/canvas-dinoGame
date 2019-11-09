@@ -3,7 +3,7 @@ const canv=document.getElementById("canvas");
 const $score=document.getElementById("score");
 const $overlay=document.getElementById("game-overlay"); 
 const $eggSound=document.getElementById("eggSound");
-$eggSound.volume=0.4; 
+$eggSound.volume=0.3; 
 
 const $gameSound=document.getElementById("gameSound");
 $gameSound.loop=true;
