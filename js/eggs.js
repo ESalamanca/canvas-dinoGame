@@ -7,6 +7,7 @@ class Egg {
     this.x=random(0,W-this.h); 
     this.y=H-50-this.h - random(0,400); 
     this.eggType=eggType;
+    this.time=Date.now(); 
     
     switch(this.eggType){
       case "normal": 
@@ -26,7 +27,10 @@ class Egg {
   
   }
 
-  draw() {
+  draw() { 
+    if (this.y<0){
+      this.y=0;
+    }
     if (!this.img) return; 
     ctx.drawImage(this.img,this.x,this.y,this.h,this.h);
     ctx.strokeRect(this.x,this.y,this.w,this.h);
@@ -35,15 +39,9 @@ class Egg {
   eatenByDino(dino){
     if (!this.img||!dino.img) return false; 
     if((this.y+this.h/2>=dino.y)&&(this.y<=dino.y+dino.h)&&(this.x>=dino.x)&&(this.x<=dino.x+dino.w-25)){
-      console.log("egg eaten");
       return true;
     }
 
   } 
   
-}
-
-function random(from, to) {
-  return Math.floor(from + Math.random()*(to - from));
-
 }

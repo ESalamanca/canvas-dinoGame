@@ -86,7 +86,7 @@ class Dino {
     this.dy += gravity;
     this.y += this.dy;
 
-    if(this.y<0){
+    if(this.y<-10){
       this.dy=0;
       this.y=0; 
     }
@@ -105,7 +105,7 @@ class Dino {
 
   adjustGround(platform){
     if(platform.active){
-      if(((this.x+this.w/2+5)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
+      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
         this.ground=platform.y-this.h;
       } else if ((this.x+this.w/2<platform.x)||(this.x+this.w/2>platform.x + platform.totalWidth)) {
         
@@ -121,8 +121,9 @@ class Dino {
 
   checkOverPlatform(platforms){
     platforms.forEach(platform=>{
-      if(((this.x+this.w/2+5)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
+      if(((this.x+this.w/2)>platform.x) && (this.x+this.w/2<platform.x+platform.totalWidth)&& (this.y+this.h<=platform.y+5)){
         this.overPlatform=platform; 
+        console.log("overPlatform"); 
       }
 
   });

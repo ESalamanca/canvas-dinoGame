@@ -1,4 +1,5 @@
 const preload=new createjs.LoadQueue(false);
+const sounds=new createjs.LoadQueue(false)
 const $load=document.getElementById("loading"); 
 const button=document.getElementById("start"); 
 var trexSound;  
@@ -24,12 +25,17 @@ function loadImages() {
     preload.loadFile({id:"dead", src:"./images/dead.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"tree", src:"./images/tree.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"mush", src:"./images/mush.png",type:createjs.Types.IMAGE});
-    preload.loadFile({id:"bird", src:"./images/spritesheetBird.png", type:createjs.Types.IMAGE});
+    preload.loadFile({id:"birdR", src:"./images/spritesheetBird.png", type:createjs.Types.IMAGE});
+    preload.loadFile({id:"birdL", src:"./images/spritesheetBirdL.png", type:createjs.Types.IMAGE});
     preload.loadFile({id:"ground", src:"./images/ground.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"idle", src:"./images/Idle.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"platformC", src:"./images/platformC.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"platformR", src:"./images/platformR.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"platformL", src:"./images/platformL.png",type:createjs.Types.IMAGE});
+  }
+
+  function loadSounds(){
+    sounds.loadFile({id:"egg", src:"./images/dead.png",type:createjs.Types.SOUNDS});
   }
 
 
@@ -42,6 +48,7 @@ function loadImages() {
   
   window.onload= () =>{
     loadImages();
+    loadSounds();
   } 
 
   preload.on("complete", handleComplete, this);
@@ -57,9 +64,13 @@ function loadImages() {
     platformL=preload.getResult("platformL");
     platformR=preload.getResult("platformR");
     dinoShield= preload.getResult("dinoShield");
-     
-  
-
   }
+
+//HELPER FUNCTIONS 
+
+function random(from, to) {
+  return Math.floor(from + Math.random()*(to - from));
+
+}
 
   

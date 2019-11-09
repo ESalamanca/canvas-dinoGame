@@ -2,13 +2,14 @@
 const canv=document.getElementById("canvas"); 
 const $score=document.getElementById("score");
 const $overlay=document.getElementById("game-overlay"); 
-const $message=document.getElementById("gameOver-message");
+const $eggSound=document.getElementById("eggSound");
 const $h1=document.querySelector("h1");
 const ctx=canv.getContext('2d');
 const W=ctx.canvas.width; 
 const H=ctx.canvas.height; 
 const gravity = 0.2;  // gravity 
-const eggTypes=["normal", "silver","gold"]
+const eggTypes=["normal", "silver","gold"];
+let startPlatforms;
 
 let translate=1; 
 let eggs=[]; 
@@ -18,7 +19,7 @@ let gameOver;
 let score=0;
 var platforms=[]; 
 var birds=[];
-let gameOverMessage="";
+
 
 
 
@@ -58,7 +59,7 @@ document.onkeyup = function (e) {
 function draw() {
   ctx.drawImage(preload.getResult("background"),0,0,700,550);
   renderGround();
-  platforms.forEach(el=>el.draw(translate)); 
+  platforms.forEach(el=>el.draw()); 
   dino.draw();
   if(dino.shield){
     ctx.drawImage(dinoShield,0,0,50,50);
@@ -90,20 +91,30 @@ function animLoop(){
   var dt = (now - lastTime) / 1000.0;
   gameTime=(now-startTime)/1000.0; 
 
+
+
   if(frames%200===0) {
     mushs.push(new Mushroom(mushSpeed)); 
   }
 
-  if(frames%400===0){
-    let eggT="normal";
-  
-      if (score%5===0) {
-        eggT="silver"; 
-      }
-      if (score%6===0 && Math.floor(Math.random()*4)===3){
-        eggT="gold"; 
-      }
-      eggs.push(new Egg(eggT));
+  if(frames%300===0){
+    if(eggs.length<5){
+      let eggT="normal";
+    
+        if (score%5===0) {
+          eggs.filter(el=> el.eggType==="silver").length>0?  eggT="normal": eggT= "silver"; 
+        }
+        if (score%6===0 && Math.floor(Math.random()*4)===3){
+          eggs.filter(el=>el.eggType==="gold").length>0?     eggT="silver":eggT= "gold"; 
+        }
+        eggs.push(new Egg(eggT));
+    }
+  }
+
+  if (frames%500===0){
+    let randomSide=Math.floor(Math.random()*2); 
+    randomSide? birds.push(new Bird(random(W/2, W),0,random(60,90),0.15,randomSide)):birds.push(new Bird(random(0, W/2),0,random(60,90),0.15,randomSide)); 
+    
   }
 
   dino.checkOverPlatform(platforms);
@@ -120,7 +131,6 @@ function animLoop(){
     el.update(dt);
     if(el.collision(dino)){
       gameOver=true;
-      gameOverMessage="The Bird got you!";
       };
   });
 
@@ -130,12 +140,13 @@ function animLoop(){
     el.jump(); 
     if(el.collision(dino)){
       gameOver=true;
-      gameOverMessage="Do not touch the red Mushrooms...";
     }
   })
-  
+
+//Delete eggs that are eaten or that are present for more than 10s 
   eggs.slice().forEach(function(egg,i){
     if(egg.eatenByDino(dino)){
+      $eggSound.play();
       switch(egg.eggType){
         case "normal":
           score ++;
@@ -152,7 +163,11 @@ function animLoop(){
       }
       
       eggs.splice(i,1);
+    } else if((Date.now()-egg.time)/1000>12){
+      eggs.splice(i,1);
+
     }
+
   });
 
 
@@ -177,7 +192,9 @@ function animLoop(){
   }
 
   if(gameOver){
-    endGame();
+    setTimeout(endGame,500);
+    //to delete for game over 
+    //raf= requestAnimationFrame(animLoop)
   }
   
 };
@@ -186,18 +203,17 @@ function animLoop(){
 
 function startGame() {
   button.blur();
+  startPlatforms=[new Platform(530,160,0, "gold",1),new Platform(350,260,1, "silver",1),new Platform(200,300,0, "normal",1),new Platform(30,400,0, "normal",1)];
   
   if (raf) {
     cancelAnimationFrame(raf);
   }
   lastTime = Date.now();
   startTime=Date.now(); 
+  platforms=startPlatforms; 
+  birds.push(new Bird(W,0,70,0.15,1));
 
-  birds.push(new Bird(W,0,70,0.15));
-  platforms.push(new Platform(10,395,0, "normal",1));
-  platforms.push(new Platform(190,298,0, "normal",1));
-  platforms.push(new Platform(380,300,1, "silver",1));
-  platforms.push(new Platform(500,193,0, "gold",1));
+ 
   // attackersId=setInterval(function(){mushs.push(new Mushroom(mushSpeed))},4000);
   raf = requestAnimationFrame(animLoop);
 }
@@ -218,9 +234,12 @@ function reset() {
   dino=new Dino();
   gameOver = false;
   mushs=[];
-  birds=[]
+  birds=[];
   eggs=[]; 
+  platforms=startPlatforms;
   score=0; 
+  gameTime=0; 
+  frames=0; 
 }
 
 function endGame(){
@@ -231,8 +250,42 @@ function endGame(){
   $overlay.style.display="block";
   $instructions.style.display="block";
   $h1.innerHTML="Game Over...";
-  $message.innerHTML=gameOverMessage;
   button.innerHTML="Start Again";
   canv.style.display="none";
 
+}
+
+
+
+
+
+function updatePlatform(){
+
+  eggs.forEach(egg=>{
+    egg.x -=200; 
+  }); 
+
+  platforms.forEach(platform=>{
+    platform.x -=200; 
+  })
+
+  addPlatform(platforms);
+
+}
+
+function addPlatform(platforms){
+  let tab= [1,-1];
+  let length=platforms.length; 
+  let lastPlatform=platforms[length-1]; 
+  let randomHeight; 
+
+  if (150<lastPlatform.y<400) {
+    randomHeight= lastPlatform.y + tab[Math.floor(Math.random()*2)]*random(80,110); 
+  } else if (lastPlatform.y <150) {
+    randomHeight= lastPlatform.y + random(80,110);
+  } else if (lastPlatform.y>400) {
+    randomHeight= lastPlatform.y - random(80,110);
+  }
+
+  platforms.push(new Platform(lastPlatform.x + random(0,150),randomHeight,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
 }

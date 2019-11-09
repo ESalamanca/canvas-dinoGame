@@ -1,8 +1,18 @@
 class Bird {
-  constructor(x,y,dx,dy){
-    this.img=preload.getResult("bird");
+
+  constructor(x,y,dx,dy,side){
+
+    this.img=preload.getResult("birdR");
+    this.side=side;
     this.h=50; 
     this.w=this.h*(this.img.naturalWidth/2)/this.img.naturalHeight; 
+    if(this.side){
+      this.x=x-this.w;
+    } else {
+      this.img=preload.getResult("birdL");
+      this.x=x;
+    }
+    
     this.x=x-this.w;
     this.y=y; 
     this.dx=dx; 
@@ -12,11 +22,15 @@ class Bird {
     this.index=0;
     this.spriteSpeed=10; 
     this.ground=H-50-this.h;
+
+    
   }
 
   update(dt){
+  
 
-    this.dy += gravity;
+
+    this.dy += gravity; //birdGravity is higher
     this.y += this.dy*dt;
 
     if (this.y >= this.ground) {
@@ -24,7 +38,12 @@ class Bird {
       this.dy = 0;
     }
 
-    this.x -= this.dx*dt;
+    if(this.side){
+      this.x -= this.dx*dt;
+    }else {
+      this.x +=this.dx*dt; 
+    }
+
     this.index +=this.spriteSpeed*dt; 
     this.frame=this.frames[Math.floor(this.index)%2];
 
