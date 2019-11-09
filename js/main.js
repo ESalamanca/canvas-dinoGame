@@ -294,7 +294,7 @@ function endGame(){
 function generatePlatforms(){
   let tab= [1,-1];
   let newPlatformSet=[]; 
-  let numberPlatforms=2+ Math.floor(Math.random()*4); // between 2 and 5 platforms; 
+  let numberPlatforms=3+ Math.floor(Math.random()*4); // between 2 and 5 platforms; 
  
   let firstX=random(150,300); 
   let firstY=random(390,420);
@@ -306,15 +306,13 @@ function generatePlatforms(){
 
   let lastX=firstX; 
   let lastY=firstY; 
-  if (numberPlatforms>2){
-    for(let i=2; i<numberPlatforms; i++ ){
-      let x= lastX + tab[Math.floor(Math.random()*2)]*random(0,150); 
-      let y= lastY - random(100,130); 
-      lastX=x; 
-      lastY=y; 
-      newPlatformSet.push(new Platform(x,y,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
-    }
-
+  
+  for(let i=2; i<numberPlatforms; i++ ){
+    let x= lastX + tab[Math.floor(Math.random()*2)]*random(0,150); 
+    let y= lastY - random(100,130); 
+    lastX=x; 
+    lastY=y; 
+    newPlatformSet.push(new Platform(x,y,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
   }
 
   return newPlatformSet; 
