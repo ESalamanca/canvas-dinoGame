@@ -41,6 +41,12 @@
   background-repeat: no-repeat;
 }
 
+#gameOver-message {
+  color:rgb(255, 51, 0); 
+  font-size:2em;
+  text-align:center;
+}
+
 canvas {
 display:none;
 border:2px solid;

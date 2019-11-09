@@ -24,6 +24,7 @@ function loadImages() {
     preload.loadFile({id:"dead", src:"./images/dead.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"tree", src:"./images/tree.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"mush", src:"./images/mush.png",type:createjs.Types.IMAGE});
+    preload.loadFile({id:"bird", src:"./images/spritesheetBird.png", type:createjs.Types.IMAGE});
     preload.loadFile({id:"ground", src:"./images/ground.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"idle", src:"./images/Idle.png",type:createjs.Types.IMAGE});
     preload.loadFile({id:"platformC", src:"./images/platformC.png",type:createjs.Types.IMAGE});

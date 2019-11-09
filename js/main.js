@@ -2,6 +2,7 @@
 const canv=document.getElementById("canvas"); 
 const $score=document.getElementById("score");
 const $overlay=document.getElementById("game-overlay"); 
+const $message=document.getElementById("gameOver-message");
 const $h1=document.querySelector("h1");
 const ctx=canv.getContext('2d');
 const W=ctx.canvas.width; 
@@ -9,12 +10,15 @@ const H=ctx.canvas.height;
 const gravity = 0.2;  // gravity 
 const eggTypes=["normal", "silver","gold"]
 
+let translate=1; 
 let eggs=[]; 
 let mushs=[];
 let mushSpeed=100; 
 let gameOver; 
 let score=0;
 var platforms=[]; 
+var birds=[];
+let gameOverMessage="";
 
 
 
@@ -52,9 +56,9 @@ document.onkeyup = function (e) {
 }
 
 function draw() {
-  ctx.drawImage(preload.getResult("background"),0,0,700,550)
+  ctx.drawImage(preload.getResult("background"),0,0,700,550);
   renderGround();
-  platforms.forEach(el=>el.draw()); 
+  platforms.forEach(el=>el.draw(translate)); 
   dino.draw();
   if(dino.shield){
     ctx.drawImage(dinoShield,0,0,50,50);
@@ -63,7 +67,8 @@ function draw() {
     ctx.fillText('Shield Activated', 55,30);
   }
   mushs.forEach(function(el){el.draw()});
-  eggs.forEach(function(el){el.draw()}); 
+  eggs.forEach(function(el){el.draw()});
+  birds.forEach(el=>el.draw());
 }
 
 
@@ -111,11 +116,22 @@ function animLoop(){
   dino.moveRight(dt);
   draw();
   
+  birds.forEach(el=>{
+    el.update(dt);
+    if(el.collision(dino)){
+      gameOver=true;
+      gameOverMessage="The Bird got you!";
+      };
+  });
+
 
   mushs.forEach(function(el){
     el.update(dt);
     el.jump(); 
-    if(el.collision(dino)){gameOver=true;}
+    if(el.collision(dino)){
+      gameOver=true;
+      gameOverMessage="Do not touch the red Mushrooms...";
+    }
   })
   
   eggs.slice().forEach(function(egg,i){
@@ -177,7 +193,7 @@ function startGame() {
   lastTime = Date.now();
   startTime=Date.now(); 
 
-
+  birds.push(new Bird(W,0,70,0.15));
   platforms.push(new Platform(10,395,0, "normal",1));
   platforms.push(new Platform(190,298,0, "normal",1));
   platforms.push(new Platform(380,300,1, "silver",1));
@@ -202,6 +218,7 @@ function reset() {
   dino=new Dino();
   gameOver = false;
   mushs=[];
+  birds=[]
   eggs=[]; 
   score=0; 
 }
@@ -214,6 +231,7 @@ function endGame(){
   $overlay.style.display="block";
   $instructions.style.display="block";
   $h1.innerHTML="Game Over...";
+  $message.innerHTML=gameOverMessage;
   button.innerHTML="Start Again";
   canv.style.display="none";
 
