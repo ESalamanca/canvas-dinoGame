@@ -14,7 +14,7 @@ class Dino {
     this.x=W/2;
     this.ground=H-50-this.h; 
     this.y= this.ground;
-    this.dx=200; //speed = pixels/seconds 
+    this.dx=240; //speed = pixels/seconds 
     this.dy=0;
     this.alive=true;
 

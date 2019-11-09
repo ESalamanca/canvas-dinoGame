@@ -214,7 +214,7 @@ function animLoop(){
 
 function startGame() {
   button.blur();
-  startPlatforms=[new Platform(530,160,0, "gold",1),new Platform(330,260,1, "silver",1),new Platform(200,300,0, "normal",1),new Platform(30,400,0, "normal",1)];
+  startPlatforms=[new Platform(530,160,0, "gold",1),new Platform(330,260,1, "silver",1),new Platform(200,320,0, "normal",1),new Platform(30,400,0, "normal",1)];
   
   if (raf) {
     cancelAnimationFrame(raf);
