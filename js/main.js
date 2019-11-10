@@ -133,7 +133,7 @@ function animLoop(){
     
   // }
 
-  if (platformTime>30 && score>5){
+  if (platformTime>30 && score>10){
     platformTimer=Date.now();
     platforms=generatePlatforms();
   }
