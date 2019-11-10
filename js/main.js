@@ -1,21 +1,19 @@
-
+//Declaring variables for the game 
 const canv=document.getElementById("canvas"); 
 const $score=document.getElementById("score");
 const $overlay=document.getElementById("game-overlay"); 
 const $eggSound=document.getElementById("eggSound");
-$eggSound.volume=0.3; 
-
 const $gameSound=document.getElementById("gameSound");
-$gameSound.loop=true;
-
 const $gameOverSound=document.getElementById("gameOverSound");
 const $mute=document.getElementById("mute");
 const $h1=document.querySelector("h1");
 const ctx=canv.getContext('2d');
+
 const W=ctx.canvas.width; 
 const H=ctx.canvas.height; 
 const gravity = 0.2;  // gravity 
 const eggTypes=["normal", "silver","gold"];
+
 let startPlatforms;
 
 let eggs=[]; 
@@ -25,8 +23,10 @@ let gameOver;
 let score=0;
 var platforms=[]; 
 var birds=[];
+
 var sound=true; 
 
+// A cross-browser requestAnimationFrame
 requestAnimationFrame= window.requestAnimationFrame       ||
 window.webkitRequestAnimationFrame ||
 window.mozRequestAnimationFrame    ||
@@ -36,16 +36,6 @@ function(callback){
     window.setTimeout(callback, 1000 / 60);
 };
 
-
-function renderGround() {
-  for (let i=0; i<7;i++) {
-    ctx.drawImage(ground,0,0,128,128,0+i*100,H-50,100,50); 
-  }
-}
-
-function renderTrees(){
-  ctx.drawImage(tree,0,0,282,301,100,H-250,200*282/301,200);
-}
 
 // HANDLE INPUT 
 
@@ -69,6 +59,8 @@ document.onkeyup = function (e) {
   
 }
 
+//Handle Canvas rendering 
+
 function draw() {
   ctx.drawImage(preload.getResult("background"),0,0,700,550);
   renderGround();
@@ -86,6 +78,16 @@ function draw() {
 }
 
 
+function renderGround() {
+  for (let i=0; i<7;i++) {
+    ctx.drawImage(ground,0,0,128,128,0+i*100,H-50,100,50); 
+  }
+}
+
+function renderTrees(){
+  ctx.drawImage(tree,0,0,282,301,100,H-250,200*282/301,200);
+}
+
 //HANDLE GAME LOOP 
 
 let raf;
@@ -96,7 +98,6 @@ let platformTimer;
 let platformTime; 
 let frames=0; 
 
-// let deltaAttack= [5,4,3,2,1]; 
 
 function animLoop(){
   
@@ -107,30 +108,32 @@ function animLoop(){
   gameTime=(now-startTime)/1000.0;
   platformTime= (now-platformTimer)/1000.0; 
 
-  if(frames%200===0) {
-    mushs.push(new Mushroom(mushSpeed)); 
-  }
+  adjustLevel(frames,mushs,eggs,birds); 
+  // if(frames%200===0) {
+  //   mushs.push(new Mushroom(mushSpeed)); 
+  // }
 
-  if(frames%300===0){
-    if(eggs.length<5){
-      let eggT="normal";
+  // if(frames%300===0){
+  //   if(eggs.length<5){
+  //     let eggT="normal";
     
-        if (score%5===0) {
-          eggs.filter(el=> el.eggType==="silver").length>0?  eggT="normal": eggT= "silver"; 
-        }
-        if (score%6===0 && Math.floor(Math.random()*4)===3){
-          eggs.filter(el=>el.eggType==="gold").length>0?     eggT="silver":eggT= "gold"; 
-        }
-        eggs.push(new Egg(eggT));
-    }
-  }
+  //       if (score%5===0) {
+  //         eggs.filter(el=> el.eggType==="silver").length>0?  eggT="normal": eggT= "silver"; 
+  //       }
+  //       if (score%6===0 && Math.floor(Math.random()*4)===3){
+  //         eggs.filter(el=>el.eggType==="gold").length>0?     eggT="silver":eggT= "gold"; 
+  //       }
+  //       eggs.push(new Egg(eggT));
+  //   }
+  // }
 
-  if (frames%500===0){
-    let randomSide=Math.floor(Math.random()*2); 
-    randomSide? birds.push(new Bird(random(W/2, W),0,random(60,90),0.15,randomSide)):birds.push(new Bird(random(0, W/2),0,random(60,90),0.15,randomSide)); 
+  // if (frames%500===0){
+  //   let randomSide=Math.floor(Math.random()*2); 
+  //   randomSide? birds.push(new Bird(random(W/2, W),0,random(60,90),0.15,randomSide)):birds.push(new Bird(random(0, W/2),0,random(60,90),0.15,randomSide)); 
     
-  }
-  if (platformTime>30 && score>20){
+  // }
+
+  if (platformTime>30 && score>5){
     platformTimer=Date.now();
     platforms=generatePlatforms();
   }
@@ -216,12 +219,13 @@ function animLoop(){
   
 };
 
-// let attackersId;
 
 function startGame() {
-  button.blur();
+  button.blur(); // to avoid startButton being pressed  
   startPlatforms=[new Platform(530,160,0, "gold",1),new Platform(330,260,1, "silver",1),new Platform(200,320,0, "normal",1),new Platform(30,400,0, "normal",1)];
-  
+  $eggSound.volume=0.3;
+  $gameSound.loop=true;
+
   if (raf) {
     cancelAnimationFrame(raf);
   }
@@ -232,7 +236,6 @@ function startGame() {
   birds.push(new Bird(W,0,70,0.15,1));
   if(sound) {$gameSound.play();}
  
-  // attackersId=setInterval(function(){mushs.push(new Mushroom(mushSpeed))},4000);
   raf = requestAnimationFrame(animLoop);
 }
 
@@ -248,6 +251,7 @@ button.onclick=()=> {
   startGame();
 }
 
+//HANDLE of Sounds to mute and un mute 
 $mute.onclick=()=>{
   if(sound){
     document.getElementById("mute-image").src="images/volumeOff.png";
@@ -258,12 +262,12 @@ $mute.onclick=()=>{
     $gameSound.play (); 
     document.getElementById("mute-image").src="images/volumeOn.png";
   }
-;
+
   $mute.blur();
 
 }
 
-
+//Start new game - reset of all game parts
 function reset() {
   dino=new Dino();
   gameOver = false;
@@ -277,8 +281,7 @@ function reset() {
 }
 
 function endGame(){
-  //clearInterval(intervalId); 
-  // clearInterval(attackersId)
+
   cancelAnimationFrame(raf);
   $overlay.style.backgroundImage="url('images/dead.png')";
   $overlay.style.display="block";
@@ -289,32 +292,3 @@ function endGame(){
   canv.style.display="none";
 
 }
-
-
-function generatePlatforms(){
-  let tab= [1,-1];
-  let newPlatformSet=[]; 
-  let numberPlatforms=3+ Math.floor(Math.random()*4); // between 2 and 5 platforms; 
- 
-  let firstX=random(150,300); 
-  let firstY=random(390,420);
-  newPlatformSet.push(new Platform(firstX,firstY,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
-
-  let secondX=random(300,500);
-  let secondY=random(360,400); 
-  newPlatformSet.push(new Platform(secondX,secondY,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
-
-  let lastX=firstX; 
-  let lastY=firstY; 
-  
-  for(let i=2; i<numberPlatforms; i++ ){
-    let x= lastX + tab[Math.floor(Math.random()*2)]*random(0,150); 
-    let y= lastY - random(100,130); 
-    lastX=x; 
-    lastY=y; 
-    newPlatformSet.push(new Platform(x,y,Math.floor(Math.random()*3),eggTypes[Math.floor(Math.random()*3)],1))
-  }
-
-  return newPlatformSet; 
-}
-
