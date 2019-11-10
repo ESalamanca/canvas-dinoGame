@@ -109,29 +109,6 @@ function animLoop(){
   platformTime= (now-platformTimer)/1000.0; 
 
   adjustLevel(frames,mushs,eggs,birds); 
-  // if(frames%200===0) {
-  //   mushs.push(new Mushroom(mushSpeed)); 
-  // }
-
-  // if(frames%300===0){
-  //   if(eggs.length<5){
-  //     let eggT="normal";
-    
-  //       if (score%5===0) {
-  //         eggs.filter(el=> el.eggType==="silver").length>0?  eggT="normal": eggT= "silver"; 
-  //       }
-  //       if (score%6===0 && Math.floor(Math.random()*4)===3){
-  //         eggs.filter(el=>el.eggType==="gold").length>0?     eggT="silver":eggT= "gold"; 
-  //       }
-  //       eggs.push(new Egg(eggT));
-  //   }
-  // }
-
-  // if (frames%500===0){
-  //   let randomSide=Math.floor(Math.random()*2); 
-  //   randomSide? birds.push(new Bird(random(W/2, W),0,random(60,90),0.15,randomSide)):birds.push(new Bird(random(0, W/2),0,random(60,90),0.15,randomSide)); 
-    
-  // }
 
   if (platformTime>30 && score>10){
     platformTimer=Date.now();
