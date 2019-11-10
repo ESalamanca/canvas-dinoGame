@@ -110,7 +110,7 @@ function animLoop(){
 
   adjustLevel(frames,mushs,eggs,birds); 
 
-  if (platformTime>30 && score>10){
+  if (platformTime>30 && score>15){
     platformTimer=Date.now();
     platforms=generatePlatforms();
   }

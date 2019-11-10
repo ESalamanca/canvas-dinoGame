@@ -24,7 +24,7 @@ class Dino {
     //Handles the movements and jumps 
     this.overPlatform; 
     this.onGround=true; 
-    this.jumpPower=-6.5;
+    this.jumpPower=-6.8;
     this.jumpKey=false; 
     this.rightKeyPressed=false; 
     this.leftKeyPressed=false; 
