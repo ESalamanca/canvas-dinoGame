@@ -1,4 +1,4 @@
-# Making Mario-type Games with Canvas
+# Making a Mario-type Game with Canvas
 
 This project was made for my Ironhack Game project. The idea was to create a super mario bros type game in 2d  with canvas. This is a super simplified version with sprites, animations, collision detection... 
 
