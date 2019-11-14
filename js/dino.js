@@ -1,7 +1,7 @@
 class Dino {
 
   constructor(){
-      
+    //DEALING WITH THE DIFFERENT IMAGES 
     this.dead=preload.getResult("dead");
     this.imgR = preload.getResult("dino");
     this.spriteRight=preload.getResult("spritesheet");
@@ -12,13 +12,13 @@ class Dino {
     this.w=100;
     this.h=this.w/dinoRatio;
     this.x=W/2;
-    this.ground=H-50-this.h; 
+    this.ground=H-50-this.h; // this.ground reprensents dino's y when he is on ground. Initially it's canvas's Height - the height of the ground - height of the Dino 
     this.y= this.ground;
     this.dx=240; //speed = pixels/seconds 
     this.dy=0;
     this.alive=true;
 
-    //Immunity to mushroom
+    //Immunity to mushroom and birds
     this.shield=false; 
     
     //Handles the movements and jumps 
@@ -36,15 +36,11 @@ class Dino {
     this.indexL=0;
     this.frame=0; 
     this.sprite=this.spriteRight; 
-  
-
-    
 
   }
 
   draw() { 
     if (!this.img) return; // if `this.img` is not loaded yet => don't draw
-      //ctx.drawImage(this.img,0,0,198,211, this.x, this.y, this.w, this.h);
     if(this.alive){ctx.drawImage(this.sprite,this.frame*193,0,193,207,this.x,this.y,this.w,this.h);}
     
     if(!this.alive) {
@@ -69,7 +65,7 @@ class Dino {
 
       }
     
-//utiliser une condition de this.leftKeyPressed; 
+
   }
 
   moveRight(dt){
@@ -117,13 +113,14 @@ class Dino {
     
   }
 
+  //Function to test if the ground is the ground or the nearest platforms 
 
   adjustGround(platforms){
     let closestPlatforms=platforms; 
     closestPlatforms = closestPlatforms.filter(platform => this.x + this.w/2 > platform.x && this.x+this.w/2 < platform.x + platform.totalWidth); // dino chevauche la plate-forme en horizontal
-      // On ne garde que les plateformes au dessous (ie: tant que pas entierement traversé)
+      // We keep only the platforms that are under the Dino 
     closestPlatforms = closestPlatforms.filter(platform => this.y+this.h <= platform.y + 5);
-      // On trie par de la plateforme la plus proche a la plus éloignée (de mario)
+      // We sort the platforms from the nearest to the farest from the Dino 
     closestPlatforms.sort((a, b) => Math.abs(this.y+this.h - a.y) - Math.abs(this.y+this.h - b.y));
 
     if (closestPlatforms[0] && this.dy > 0 && this.y+this.dy+this.h >= closestPlatforms[0].y) {

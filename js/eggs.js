@@ -4,10 +4,10 @@ class Egg {
   constructor(eggType){
      
     this.h=30; 
-    this.x=random(0,W-this.h); 
+    this.x=random(0,W-this.h);  //random X and Y 
     this.y=H-50-this.h - random(0,400); 
-    this.eggType=eggType;
-    this.time=Date.now(); 
+    this.eggType=eggType; // We have Silver, Golden or normal Eggs 
+    this.time=Date.now(); // to be able to erase them after a period of time 
     
     switch(this.eggType){
       case "normal": 
@@ -33,7 +33,6 @@ class Egg {
     }
     if (!this.img) return; 
     ctx.drawImage(this.img,this.x,this.y,this.h,this.h);
-    ctx.strokeRect(this.x,this.y,this.w,this.h);
   }
   
   eatenByDino(dino){

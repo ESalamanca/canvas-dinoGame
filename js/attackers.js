@@ -3,9 +3,10 @@ class Bird {
   constructor(x,y,dx,dy,side){
 
     this.img=preload.getResult("birdR");
-    this.side=side;
+    this.side=side; //side from which the bird will come (Left=0 or Right=1)
     this.h=50; 
     this.w=this.h*(this.img.naturalWidth/2)/this.img.naturalHeight; 
+    
     if(this.side){
       this.x=x-this.w;
     } else {
@@ -59,7 +60,7 @@ class Bird {
     if((this.y+this.h/2>=dino.y)&&(this.y<=dino.y+dino.h)&&(this.x>=dino.x)&&(this.x<=dino.x+dino.w/2)){
       console.log("collision bird")
       if(dino.shield) {
-        setTimeout(()=>{dino.shield=false},500); 
+        setTimeout(()=>{dino.shield=false},500); // We wait just a little bit before deleting the shield, or the DINO Still dies because collision lasts a few milliseconds 
         return false; 
       }
       return true;
@@ -82,7 +83,7 @@ class Mushroom {
     this.img = preload.getResult("mush");
     this.h=30; 
     this.w=this.h*this.img.naturalWidth/this.img.naturalHeight;
-    this.left=Math.floor(Math.random()*2);  
+    this.left=Math.floor(Math.random()*2);  //Side is chosen randomly here 
     this.left? this.x=0: this.x=W-this.h;   
     this.y=H-50-this.h; 
     this.dx=dx;
@@ -109,7 +110,7 @@ class Mushroom {
   draw() {
     if (!this.img||!this.isActive) return; 
     ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
-    // ctx.strokeRect(this.x,this.y,this.w,this.h);
+    
   }
 
   //test if collision with Dino 
@@ -124,6 +125,7 @@ class Mushroom {
     }
   }
 
+  // To increase difficulty the mushrooms will start to do little jumps 
   jump(){
     if (this.jumpAction && this.onGround && this.isActive) { 
       this.dy = this.jumpPower;

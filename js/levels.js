@@ -1,3 +1,5 @@
+// FILE With some functions TO HANDLE DIFFICULTY 
+
 function generatePlatforms(){
   let tab= [1,-1];
   let newPlatformSet=[]; 

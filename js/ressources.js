@@ -1,8 +1,9 @@
+// FILE TO HANDLE THE LOADING OF THE IMAGES - PRELOADJS LIBRARY AND COMMON FUNCTIONS 
+
 const preload=new createjs.LoadQueue(false);
-// const sounds=new createjs.LoadQueue(false);
 const $load=document.getElementById("loading"); 
 const button=document.getElementById("start"); 
-var trexSound;  
+ 
 let dino;
 var ground;
 var tree; 
@@ -36,16 +37,9 @@ function loadImages() {
     preload.loadFile({id:"volumeOn", src:"./images/volumeOff.png",type:createjs.Types.IMAGE});
   }
 
-  // function loadSounds(){
-  //   sounds.loadFile({id:"egg", src:"./assets/eggEaten.wav",type:createjs.Types.SOUNDS});
-  //   sounds.loadFile({id:"died", src:"./assets/dies.wav",type:createjs.Types.SOUNDS});
-  //   sounds.loadFile({id:"gamePlay", src:"./assets/gamePlay.wav",type:createjs.Types.SOUNDS});
-  // }
-
   
   window.onload= () =>{
     loadImages();
-    // loadSounds();
   } 
 
   preload.on("complete", handleComplete, this);
@@ -67,7 +61,6 @@ function loadImages() {
 
 function random(from, to) {
   return Math.floor(from + Math.random()*(to - from));
-
 }
 
   

@@ -1,10 +1,11 @@
-//Declaring variables for the game 
+//Declaring global variables for the game 
 const canv=document.getElementById("canvas"); 
 const $score=document.getElementById("score");
 const $overlay=document.getElementById("game-overlay"); 
 const $eggSound=document.getElementById("eggSound");
 const $gameSound=document.getElementById("gameSound");
 const $gameOverSound=document.getElementById("gameOverSound");
+const $instructions=document.querySelector(".instructions");
 const $mute=document.getElementById("mute");
 const $h1=document.querySelector("h1");
 const ctx=canv.getContext('2d');
@@ -115,6 +116,7 @@ function animLoop(){
     platforms=generatePlatforms();
   }
 
+  //Updating Dino's position and drawing of the whole canvas updated 
   dino.adjustGround(platforms); 
   dino.update();
   dino.moveLeft(dt);
@@ -139,7 +141,7 @@ function animLoop(){
     }
   })
 
-//Delete eggs that are eaten or that are present for more than 10s 
+//Delete eggs that are eaten or that are present for more than 12s 
   eggs.slice().forEach(function(egg,i){
     if(egg.eatenByDino(dino)){
       if(sound){$eggSound.play()};
@@ -159,7 +161,7 @@ function animLoop(){
       }
       
       eggs.splice(i,1);
-    } else if((Date.now()-egg.time)/1000>12){
+    } else if((Date.now()-egg.time)/1000>10){
       eggs.splice(i,1);
 
     }
@@ -182,6 +184,7 @@ function animLoop(){
     } 
   }
 
+  // HANDLE GAME OVER 
   if(!gameOver) { 
     raf= requestAnimationFrame(animLoop);
   }
@@ -196,6 +199,7 @@ function animLoop(){
   
 };
 
+//HANDLING the Beginning 
 
 function startGame() {
   button.blur(); // to avoid startButton being pressed  
@@ -215,8 +219,6 @@ function startGame() {
  
   raf = requestAnimationFrame(animLoop);
 }
-
-const $instructions=document.querySelector(".instructions");
 
 button.onclick=()=> {
   console.log('action declared')
@@ -257,6 +259,7 @@ function reset() {
   frames=0; 
 }
 
+//END GAME 
 function endGame(){
 
   cancelAnimationFrame(raf);
