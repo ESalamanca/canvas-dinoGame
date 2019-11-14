@@ -23,7 +23,7 @@ There are many websites that offer free game assets. I found almost all I needed
 
 -Mushrooms and Birds : those are generated randomly and come from the left or the right. The Dino dies if there is a collision. 
 
--Eggs: normal eggs provide 1pt, silver eggs provide 2pts and an "armour" that prevents the dino from dying when there is a collision with a Mushroom or a Bird. Eggs appear regularly, golden and silver eggs are rarer and all types of eggs disappear after 10s. 
+-Eggs: normal eggs provide 1pt, silver eggs provide 2pts and an "armour" that prevents the dino from dying when there is a collision with a Mushroom or a Bird and golden eggs provide 5pts. Eggs appear regularly, golden and silver eggs are rarer and all types of eggs disappear after 10s. 
 
 -The platforms that enable to catch a maximum of eggs. When the score has reached 16 and the player has played for more than 30s, a new set of platforms are generated. Then every 30s, the platforms are generated again. 
 
