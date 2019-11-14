@@ -28,8 +28,6 @@ class Bird {
   }
 
   update(dt){
-  
-
 
     this.dy += gravity; //birdGravity is higher
     this.y += this.dy*dt;
