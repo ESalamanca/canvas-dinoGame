@@ -49,7 +49,7 @@ function adjustLevel(frames,mushs,eggs,birds){
 
   if (frames%500===0){
     let randomSide=Math.floor(Math.random()*2); 
-    randomSide? birds.push(new Bird(random(W/2, W),0,random(60,90),0.15,randomSide)):birds.push(new Bird(random(0, W/2),0,random(60,90),0.15,randomSide)); 
+    randomSide? birds.push(new Bird(random(W/2, W),0,random(80,120),0.15,randomSide)):birds.push(new Bird(random(0, W/2),0,random(60,90),0.15,randomSide)); 
   }
   
    

@@ -178,6 +178,7 @@ function animLoop(){
   }
 
   if (score>10){ 
+    mushSpeed=200; 
     let activeMushs=mushs.filter(el=>el.isActive); 
     if(activeMushs){
       activeMushs[Math.floor(Math.random()*activeMushs.length)].jumpAction=true;
