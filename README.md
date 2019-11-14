@@ -20,14 +20,20 @@ There are many websites that offer free game assets. I found almost all I needed
 
 ### Game components: 
 -The Dino, principal character. The aim of the game is to gather a maximum of points before dying. It gets harder with time and score. 
+
 -Mushrooms and Birds : those are generated randomly and come from the left or the right. The Dino dies if there is a collision. 
+
 -Eggs: normal eggs provide 1pt, silver eggs provide 2pts and an "armour" that prevents the dino from dying when there is a collision with a Mushroom or a Bird. Eggs appear regularly, golden and silver eggs are rarer and all types of eggs disappear after 10s. 
+
 -The platforms that enable to catch a maximum of eggs. When the score has reached 16 and the player has played for more than 30s, a new set of platforms are generated. Then every 30s, the platforms are generated again. 
+
 -The ground/background : just for graphics 
 
 ### Game animation: 
 The game runs into an Animation Loop that continuously updates and draws all the components `requestAnimationFrame() ` 
+
 In order to animate the dino and the birds, the images of the component change with time through the technique of "Sprites". 
+
 When the Dino Dies, the image of the dead dino appears before the Game Over Screen is displayed  
 
 
